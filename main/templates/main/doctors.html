@@ -1,0 +1,128 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="d-flex"> 
+        <h1 class="h3 mb-2 text-primary font-weight-bolder">Doctors</h1><br>
+        {% if request.user.is_superuser %}
+        <button class="ml-auto btn btn-primary" data-toggle="modal" data-target="#Add">
+            Add Doctors
+        </button>
+        {% endif %}
+    </div>
+
+
+    <div class="mt-3 card shadow mb-4" data-aos="fade-up" data-aos-duration="1000" data-aos-easing="ease-in-out">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary text-center">Doctors Information</h6>
+
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tally-table" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Birthday</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>Phone Number</th>
+                            <th>Available Day</th>
+                            <th>Available Times</th>
+                            {% if request.user.is_superuser %}
+                            <th>Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doctor in doctors %}
+                        <tr>
+                            <td> {{ doctor.last_name }}, {{ doctor.first_name }} </td>
+                            <td> {{ doctor.specialization }} </td>
+                            <td> {{ doctor.birthday }}  </td>
+                            <td> {{ doctor.gender }} </td>
+                            <td> {{ doctor.address }} </td>
+                            <td> {{ doctor.phone_number }} </td>
+                            <td> {{ doctor.available_day }} </td>
+                            <td> {{ doctor.available_time }} </td>
+                            {% if request.user.is_superuser %}
+                            <td class="text-center">  
+                                <a href="{% url 'doctor_update' doctor.id %}" class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i></a>
+                                <a href="{% url 'doctor_delete' doctor.id %}" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+                            {% endif %}
+                        </tr>   
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Doctors</b></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="reader"> </div>
+                    <form name="attendance" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group mt-3">
+                            <label for="subject">Last Name: </label>
+                            {{ form.last_name }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">First Name: </label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Birthday: </label>
+                            {{ form.birthday }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Gender: </label>
+                            {{ form.gender }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Phone Number: </label>
+                            {{ form.phone_number }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Address: </label>
+                            {{ form.address }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Specialization: </label>
+                            {{ form.specialization }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Avaible Days: </label>
+                            {{ form.available_day }}
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="subject">Avaible Time: </label>
+                            {{ form.available_time }}
+                        </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Confirm</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

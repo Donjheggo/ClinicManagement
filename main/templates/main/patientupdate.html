@@ -1,0 +1,52 @@
+{% extends 'main/layout.html' %}
+
+
+{% block body %}
+
+<div class="container"> 
+    <h1 class="h3 mb-2 text-primary text-center font-weight-bolder">Update <b> {{ patient }} </b></h1><br>
+<form action="" method="POST" class="user" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <label> Last Name: </label>
+        {{ form.last_name }}
+    </div>
+    <div class="form-group">
+        <label> Last Name: </label>
+        {{ form.first_name }}
+    </div>
+    <div class="form-group">
+        <label> Birthday: </label>
+        {{ form.birthday }}
+    </div>
+    <div class="form-group">
+        <label> Gender: </label>
+        {{ form.gender }}
+    </div>
+    <div class="form-group">
+        <label> Address: </label>
+        {{ form.address }}
+    </div>
+    <div class="form-group">
+        <label> Phone Number: </label>
+        {{ form.phone_number }}
+    </div>
+    <div class="form-group">
+        <label> Status: </label>
+        {{ form.status }}
+    </div>
+    {% if request.user.user_type == 'Doctor' %}
+    <div class="form-group">
+        <label> Prescription: </label>
+        {{ form.prescription }}
+    </div>
+    {% endif %}
+
+   <div class="d-flex justify-content-center">
+   <input type="submit" value="Save" class="btn btn-primary btn-user  w-25">
+   <a href="{{request.META.HTTP_REFERER}}" class="ml-3 btn btn-secondary btn-user  w-25">Cancel</a>
+   </div>
+</form>
+</div>
+
+{% endblock %}
